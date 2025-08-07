@@ -406,6 +406,30 @@ body {
 .btn:hover { transform: translateY(-1px); }
 .btn:active { transform: translateY(0); }
 
+/* Tabs */
+.tabs {
+  display: inline-flex;
+  background: #eef3f8;
+  border-radius: var(--radius-2);
+  padding: 4px;
+  gap: 4px;
+}
+
+.tab {
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  border-radius: var(--radius-1);
+  cursor: pointer;
+  color: var(--color-muted);
+}
+
+.tab-active {
+  background: #fff;
+  color: var(--color-text);
+  box-shadow: var(--shadow-1);
+}
+
 .image-caption {
   position: absolute;
   bottom: 0;

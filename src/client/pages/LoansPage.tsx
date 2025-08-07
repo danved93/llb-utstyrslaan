@@ -5,9 +5,11 @@ import { useAuth } from '../contexts/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import LoanCard from '../components/LoanCard';
 import FileUpload from '../components/FileUpload';
+import Drawer from '../components/ui/Drawer';
 import { getLoans, returnLoan } from '../utils/api';
 import { Loan, LoanStatus } from '@/shared/types';
 import { useToast } from '../components/ui/Toast';
+import Tabs from '../components/ui/Tabs';
 
 function LoansPage() {
   const [loans, setLoans] = useState<Loan[]>([]);
@@ -149,24 +151,17 @@ function LoansPage() {
 
       {/* Filtre */}
       <div className="card" style={{ marginBottom: '2rem' }}>
-        <div className="card-body">
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-            <label>Filtrer på status:</label>
-            <select
-              value={selectedStatus}
-              onChange={(e) => {
-                setSelectedStatus(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="form-select"
-              style={{ maxWidth: '200px' }}
-            >
-              <option value="">Alle statuser</option>
-              <option value={LoanStatus.ACTIVE}>Aktive</option>
-              <option value={LoanStatus.RETURNED}>Returnerte</option>
-              <option value={LoanStatus.OVERDUE}>Forfalte</option>
-            </select>
-          </div>
+        <div className="card-body" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+          <Tabs
+            tabs={[
+              { key: '', label: 'Alle' },
+              { key: LoanStatus.ACTIVE, label: 'Aktive' },
+              { key: LoanStatus.RETURNED, label: 'Returnerte' },
+              { key: LoanStatus.OVERDUE, label: 'Forfalte' },
+            ]}
+            value={selectedStatus}
+            onChange={(v) => { setSelectedStatus(v); setCurrentPage(1); }}
+          />
         </div>
       </div>
 
@@ -237,104 +232,79 @@ function LoansPage() {
 
       {/* Return Modal */}
       {returnModal.show && returnModal.loan && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-        }}>
-          <div style={{
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '2rem',
-            maxWidth: '600px',
-            width: '90%',
-            maxHeight: '90vh',
-            overflow: 'auto',
-          }}>
-            <h2 style={{ marginBottom: '1.5rem' }}>
-              Registrer retur: {returnModal.loan.itemName}
-            </h2>
+        <Drawer open={returnModal.show} onClose={closeReturnModal} title={`Registrer retur: ${returnModal.loan.itemName}`}>
+          <form onSubmit={handleReturnSubmit}>
+            <div className="form-group">
+              <label htmlFor="returnLocation" className="form-label">
+                Leveringssted
+              </label>
+              <input
+                type="text"
+                id="returnLocation"
+                className="form-input"
+                value={returnModal.returnLocation}
+                onChange={(e) => setReturnModal(prev => ({ 
+                  ...prev, 
+                  returnLocation: e.target.value 
+                }))}
+                placeholder="Hvor ble utstyret levert?"
+                disabled={returnModal.loading}
+              />
+            </div>
 
-            <form onSubmit={handleReturnSubmit}>
-              <div className="form-group">
-                <label htmlFor="returnLocation" className="form-label">
-                  Leveringssted
-                </label>
-                <input
-                  type="text"
-                  id="returnLocation"
-                  className="form-input"
-                  value={returnModal.returnLocation}
-                  onChange={(e) => setReturnModal(prev => ({ 
-                    ...prev, 
-                    returnLocation: e.target.value 
-                  }))}
-                  placeholder="Hvor ble utstyret levert?"
-                  disabled={returnModal.loading}
-                />
-              </div>
+            <div className="form-group">
+              <label htmlFor="notes" className="form-label">
+                Notater
+              </label>
+              <textarea
+                id="notes"
+                className="form-textarea"
+                value={returnModal.notes}
+                onChange={(e) => setReturnModal(prev => ({ 
+                  ...prev, 
+                  notes: e.target.value 
+                }))}
+                placeholder="Tilstand ved retur, eventuelle skader, etc."
+                rows={4}
+                disabled={returnModal.loading}
+              />
+            </div>
 
-              <div className="form-group">
-                <label htmlFor="notes" className="form-label">
-                  Notater
-                </label>
-                <textarea
-                  id="notes"
-                  className="form-textarea"
-                  value={returnModal.notes}
-                  onChange={(e) => setReturnModal(prev => ({ 
-                    ...prev, 
-                    notes: e.target.value 
-                  }))}
-                  placeholder="Tilstand ved retur, eventuelle skader, etc."
-                  rows={4}
-                  disabled={returnModal.loading}
-                />
-              </div>
+            <div className="form-group">
+              <label className="form-label">
+                Bilder ved retur
+              </label>
+              <FileUpload
+                onFilesChange={(files) => setReturnModal(prev => ({ 
+                  ...prev, 
+                  photos: files 
+                }))}
+                maxFiles={5}
+                acceptedTypes={['image/*']}
+              />
+            </div>
 
-              <div className="form-group">
-                <label className="form-label">
-                  Bilder ved retur
-                </label>
-                <FileUpload
-                  onFilesChange={(files) => setReturnModal(prev => ({ 
-                    ...prev, 
-                    photos: files 
-                  }))}
-                  maxFiles={5}
-                  acceptedTypes={['image/*']}
-                />
-              </div>
-
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={returnModal.loading}
-                  style={{ flex: 1 }}
-                >
-                  {returnModal.loading ? 'Registrerer retur...' : 'Registrer retur'}
-                </button>
-                
-                <button
-                  type="button"
-                  onClick={closeReturnModal}
-                  className="btn btn-secondary"
-                  disabled={returnModal.loading}
-                >
-                  Avbryt
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={returnModal.loading}
+                style={{ flex: 1 }}
+              >
+                {returnModal.loading ? 'Registrerer retur...' : 'Registrer retur'}
+              </button>
+              
+              <button
+                type="button"
+                onClick={closeReturnModal}
+                className="btn btn-secondary"
+                disabled={returnModal.loading}
+              >
+                Avbryt
+              </button>
+            </div>
+          </form>
+        </Drawer>
       )}
     </div>
   );
