@@ -6,6 +6,7 @@ import LoanCard from '../components/LoanCard';
 import FileUpload from '../components/FileUpload';
 import { getLoans, returnLoan } from '../utils/api';
 import { Loan, LoanStatus } from '@/shared/types';
+import { useToast } from '../components/ui/Toast';
 
 function LoansPage() {
   const [loans, setLoans] = useState<Loan[]>([]);
@@ -33,6 +34,7 @@ function LoansPage() {
   });
 
   const { isAdmin } = useAuth();
+  const { show } = useToast();
 
   useEffect(() => {
     loadLoans();
@@ -88,6 +90,7 @@ function LoansPage() {
             ? { ...loan, status: LoanStatus.RETURNED, returnedAt: new Date() }
             : loan
         ));
+        show('Retur registrert', 'success');
         
         // Lukk modal
         setReturnModal({
@@ -102,10 +105,14 @@ function LoansPage() {
         // Last inn lån på nytt for å få oppdaterte data
         loadLoans();
       } else {
-        setError(response.error?.message || 'Kunne ikke registrere retur');
+        const msg = response.error?.message || 'Kunne ikke registrere retur';
+        setError(msg);
+        show(msg, 'error');
       }
     } catch (err: any) {
-      setError('En feil oppstod ved registrering av retur');
+      const msg = 'En feil oppstod ved registrering av retur';
+      setError(msg);
+      show(msg, 'error');
     } finally {
       setReturnModal(prev => ({ ...prev, loading: false }));
     }

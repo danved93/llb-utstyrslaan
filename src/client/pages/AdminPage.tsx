@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { getPendingUsers, getUsers, approveUser, getStats } from '../utils/api';
 import { User } from '@/shared/types';
+import { useToast } from '../components/ui/Toast';
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState<'pending' | 'users' | 'stats'>('pending');
@@ -11,6 +12,7 @@ function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const { show } = useToast();
 
   useEffect(() => {
     loadData();
@@ -60,11 +62,16 @@ function AdminPage() {
               : user
           ));
         }
+        show(approved ? 'Bruker godkjent' : 'Bruker avslått', 'success');
       } else {
-        setError(response.error?.message || 'Kunne ikke oppdatere bruker');
+        const msg = response.error?.message || 'Kunne ikke oppdatere bruker';
+        setError(msg);
+        show(msg, 'error');
       }
     } catch (err: any) {
-      setError('En feil oppstod ved oppdatering av bruker');
+      const msg = 'En feil oppstod ved oppdatering av bruker';
+      setError(msg);
+      show(msg, 'error');
     } finally {
       setActionLoading(null);
     }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../components/ui/Toast';
 
 function RegisterPage() {
   const [name, setName] = useState('');
@@ -11,6 +12,7 @@ function RegisterPage() {
   const [loading, setLoading] = useState(false);
   
   const { register, isAuthenticated } = useAuth();
+  const { show } = useToast();
 
   // Redirect hvis allerede innlogget
   if (isAuthenticated) {
@@ -31,8 +33,11 @@ function RegisterPage() {
 
     try {
       await register(name, email, password);
+      show('Konto opprettet! Venter på godkjenning.', 'success');
     } catch (err: any) {
-      setError(err.message || 'Registrering feilet');
+      const msg = err.message || 'Registrering feilet';
+      setError(msg);
+      show(msg, 'error');
     } finally {
       setLoading(false);
     }

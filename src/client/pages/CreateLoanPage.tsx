@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FileUpload from '../components/FileUpload';
 import { createLoan } from '../utils/api';
+import { useToast } from '../components/ui/Toast';
 
 function CreateLoanPage() {
   const [itemName, setItemName] = useState('');
@@ -11,6 +12,7 @@ function CreateLoanPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const { show } = useToast();
   
   const navigate = useNavigate();
 
@@ -35,14 +37,19 @@ function CreateLoanPage() {
 
       if (response.success) {
         setSuccess('Lån opprettet!');
+        show('Lån opprettet', 'success');
         setTimeout(() => {
           navigate('/loans');
         }, 1500);
       } else {
-        setError(response.error?.message || 'Kunne ikke opprette lån');
+        const msg = response.error?.message || 'Kunne ikke opprette lån';
+        setError(msg);
+        show(msg, 'error');
       }
     } catch (err: any) {
-      setError('En feil oppstod ved opprettelse av lån');
+      const msg = 'En feil oppstod ved opprettelse av lån';
+      setError(msg);
+      show(msg, 'error');
     } finally {
       setLoading(false);
     }

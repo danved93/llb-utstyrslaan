@@ -1,4 +1,5 @@
 /* Global styles for LLB Utstyrslån */
+@import './tokens.css';
 
 * {
   box-sizing: border-box;
@@ -12,8 +13,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   line-height: 1.6;
 }
 
@@ -38,7 +39,7 @@ body {
 /* Header */
 .header {
   background: #2c3e50;
-  color: white;
+  color: #fff;
   padding: 1rem 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -88,17 +89,17 @@ body {
 }
 
 .btn-primary {
-  background-color: #3498db;
-  color: white;
+  background-color: var(--color-primary);
+  color: #fff;
 }
 
 .btn-primary:hover {
-  background-color: #2980b9;
+  background-color: var(--color-primary-600);
 }
 
 .btn-success {
-  background-color: #27ae60;
-  color: white;
+  background-color: var(--color-success);
+  color: #fff;
 }
 
 .btn-success:hover {
@@ -106,8 +107,8 @@ body {
 }
 
 .btn-danger {
-  background-color: #e74c3c;
-  color: white;
+  background-color: var(--color-danger);
+  color: #fff;
 }
 
 .btn-danger:hover {
@@ -116,7 +117,7 @@ body {
 
 .btn-secondary {
   background-color: #95a5a6;
-  color: white;
+  color: #fff;
 }
 
 .btn-secondary:hover {
@@ -125,21 +126,21 @@ body {
 
 .btn-outline {
   background-color: transparent;
-  border: 2px solid #3498db;
-  color: #3498db;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
 }
 
 .btn-outline:hover {
-  background-color: #3498db;
-  color: white;
+  background-color: var(--color-primary);
+  color: #fff;
 }
 
 /* Forms */
 .form {
-  background: white;
+  background: var(--color-surface);
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-1);
   max-width: 500px;
   margin: 0 auto;
 }
@@ -160,8 +161,8 @@ body {
 .form-select {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #e1e8ed;
-  border-radius: 4px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-1);
   font-size: 1rem;
   font-family: inherit;
   transition: border-color 0.2s;
@@ -171,7 +172,7 @@ body {
 .form-textarea:focus,
 .form-select:focus {
   outline: none;
-  border-color: #3498db;
+  border-color: var(--color-primary);
 }
 
 .form-textarea {
@@ -187,9 +188,9 @@ body {
 
 /* Cards */
 .card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  background: var(--color-surface);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-1);
   overflow: hidden;
   margin-bottom: 1rem;
 }
@@ -197,7 +198,7 @@ body {
 .card-header {
   padding: 1rem 1.5rem;
   background-color: #f8f9fa;
-  border-bottom: 1px solid #e1e8ed;
+  border-bottom: 1px solid var(--color-border);
   font-weight: 500;
 }
 
@@ -208,7 +209,7 @@ body {
 .card-footer {
   padding: 1rem 1.5rem;
   background-color: #f8f9fa;
-  border-top: 1px solid #e1e8ed;
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -231,7 +232,7 @@ body {
 /* Status badges */
 .status-badge {
   padding: 0.25rem 0.75rem;
-  border-radius: 12px;
+  border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -261,17 +262,17 @@ body {
 .table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
+  background: var(--color-surface);
+  border-radius: var(--radius-2);
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-1);
 }
 
 .table th,
 .table td {
   padding: 1rem;
   text-align: left;
-  border-bottom: 1px solid #e1e8ed;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .table th {

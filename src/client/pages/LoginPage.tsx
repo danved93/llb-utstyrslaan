@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../components/ui/Toast';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   
   const { login, isAuthenticated } = useAuth();
+  const { show } = useToast();
 
   // Redirect hvis allerede innlogget
   if (isAuthenticated) {
@@ -22,8 +24,11 @@ function LoginPage() {
 
     try {
       await login(email, password);
+      show('Velkommen tilbake!', 'success');
     } catch (err: any) {
-      setError(err.message || 'Innlogging feilet');
+      const msg = err.message || 'Innlogging feilet';
+      setError(msg);
+      show(msg, 'error');
     } finally {
       setLoading(false);
     }
