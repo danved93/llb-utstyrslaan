@@ -1,0 +1,78 @@
+// Prisma schema fil for LLB Utstyrslån applikasjon
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  passwordHash String  @map("password_hash")
+  role        UserRole @default(BORROWER)
+  isApproved  Boolean  @default(false) @map("is_approved")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relasjoner
+  loans       Loan[]
+
+  @@map("users")
+}
+
+model Loan {
+  id             String     @id @default(cuid())
+  userId         String     @map("user_id")
+  itemName       String     @map("item_name")
+  description    String?
+  loanLocation   String?    @map("loan_location")
+  returnLocation String?    @map("return_location")
+  loanedAt       DateTime   @default(now()) @map("loaned_at")
+  returnedAt     DateTime?  @map("returned_at")
+  status         LoanStatus @default(ACTIVE)
+  notes          String?
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  // Relasjoner
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  loanPhotos  LoanPhoto[]
+
+  @@map("loans")
+}
+
+model LoanPhoto {
+  id       String    @id @default(cuid())
+  loanId   String    @map("loan_id")
+  photoUrl String    @map("photo_url")
+  type     PhotoType
+  caption  String?
+  uploadedAt DateTime @default(now()) @map("uploaded_at")
+
+  // Relasjoner
+  loan Loan @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@map("loan_photos")
+}
+
+enum UserRole {
+  ADMIN
+  BORROWER
+}
+
+enum LoanStatus {
+  ACTIVE
+  RETURNED
+  OVERDUE
+  CANCELLED
+}
+
+enum PhotoType {
+  LOAN
+  RETURN
+}

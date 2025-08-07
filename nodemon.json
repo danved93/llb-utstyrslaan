@@ -1,0 +1,11 @@
+{
+  "watch": ["src/server"],
+  "ext": "ts,js",
+  "ignore": ["src/client", "dist", "node_modules"],
+  "exec": "ts-node -r tsconfig-paths/register --project tsconfig.server.json src/server/index.ts",
+  "env": {
+    "NODE_ENV": "development",
+    "PORT": "5001",
+    "CLIENT_URL": "http://localhost:3001"
+  }
+}
