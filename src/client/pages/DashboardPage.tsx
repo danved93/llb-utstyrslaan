@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PageHeader from '../components/ui/PageHeader';
 import { useAuth } from '../contexts/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import LoanCard from '../components/LoanCard';
@@ -48,10 +49,17 @@ function DashboardPage() {
 
   return (
     <div className="container">
-      <div style={{ marginBottom: '2rem' }}>
-        <h1>Dashboard</h1>
-        <p>Velkommen, {user?.name}!</p>
-      </div>
+      <PageHeader
+        title="Dashboard"
+        subtitle={`Velkommen, ${user?.name}!`}
+        actions={
+          <div>
+            {isApprovedBorrower && (
+              <Link to="/create-loan" className="btn btn-success">Nytt lån</Link>
+            )}
+          </div>
+        }
+      />
 
       {error && (
         <div className="alert alert-error" style={{ marginBottom: '2rem' }}>

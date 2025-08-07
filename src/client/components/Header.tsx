@@ -26,7 +26,7 @@ function Header() {
             </Link>
           </div>
           
-          <nav className="nav">
+          <nav className="nav" aria-label="Hovedmeny">
             <Link 
               to="/dashboard" 
               className={isActive('/dashboard') ? 'active' : ''}

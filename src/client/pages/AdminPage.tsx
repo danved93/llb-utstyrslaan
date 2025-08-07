@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '../components/LoadingSpinner';
+import PageHeader from '../components/ui/PageHeader';
 import { getPendingUsers, getUsers, approveUser, getStats } from '../utils/api';
 import { User } from '@/shared/types';
 import { useToast } from '../components/ui/Toast';
@@ -89,7 +90,7 @@ function AdminPage() {
 
   return (
     <div className="container">
-      <h1 style={{ marginBottom: '2rem' }}>Admin Panel</h1>
+      <PageHeader title="Admin Panel" />
 
       {error && (
         <div className="alert alert-error" style={{ marginBottom: '2rem' }}>

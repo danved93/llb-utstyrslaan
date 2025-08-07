@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PageHeader from '../components/ui/PageHeader';
 import { useAuth } from '../contexts/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import LoanCard from '../components/LoanCard';
@@ -135,12 +136,10 @@ function LoansPage() {
 
   return (
     <div className="container">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1>{isAdmin ? 'Alle lån' : 'Mine lån'}</h1>
-        <Link to="/create-loan" className="btn btn-primary">
-          Nytt lån
-        </Link>
-      </div>
+      <PageHeader
+        title={isAdmin ? 'Alle lån' : 'Mine lån'}
+        actions={<Link to="/create-loan" className="btn btn-primary">Nytt lån</Link>}
+      />
 
       {error && (
         <div className="alert alert-error" style={{ marginBottom: '2rem' }}>

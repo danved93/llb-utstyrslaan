@@ -33,7 +33,7 @@ body {
 
 .main-content {
   flex: 1;
-  padding: 20px 0;
+  padding: 28px 0 40px;
 }
 
 /* Header */
@@ -195,6 +195,30 @@ body {
   margin-bottom: 1rem;
 }
 
+/* Page header */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  margin-top: 4px;
+  color: var(--color-muted);
+}
+
+.page-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
 .card-header {
   padding: 1rem 1.5rem;
   background-color: #f8f9fa;
@@ -239,23 +263,23 @@ body {
 }
 
 .status-active {
-  background-color: #d4edda;
-  color: #155724;
+  background-color: rgba(39, 174, 96, 0.15);
+  color: #1e7e34;
 }
 
 .status-returned {
-  background-color: #cce5ff;
-  color: #004085;
+  background-color: rgba(52, 152, 219, 0.15);
+  color: #1b6ca8;
 }
 
 .status-overdue {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: rgba(231, 76, 60, 0.15);
+  color: #943126;
 }
 
 .status-pending {
-  background-color: #fff3cd;
-  color: #856404;
+  background-color: rgba(243, 156, 18, 0.15);
+  color: #8a5a00;
 }
 
 /* Tables */
@@ -340,7 +364,7 @@ body {
 
 /* File upload */
 .file-upload {
-  border: 2px dashed #e1e8ed;
+  border: 2px dashed var(--color-border);
   border-radius: 8px;
   padding: 2rem;
   text-align: center;
@@ -377,6 +401,10 @@ body {
   height: 200px;
   object-fit: cover;
 }
+
+/* Buttons: subtle hover/active */
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
 
 .image-caption {
   position: absolute;
